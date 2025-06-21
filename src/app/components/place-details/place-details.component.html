@@ -1,0 +1,246 @@
+<!-- Toast and ConfirmDialog should be outside the sidebar to work globally -->
+<p-toast></p-toast>
+<p-confirmDialog 
+  [style]="{width: '450px'}" 
+  header="Confirm Delete" 
+  icon="pi pi-exclamation-triangle"
+  acceptLabel="Yes"
+  rejectLabel="No"
+  acceptButtonStyleClass="p-button-danger"
+  rejectButtonStyleClass="p-button-text">
+</p-confirmDialog>
+
+<!-- Sidebar -->
+<p-sidebar 
+  [(visible)]="isOpen" 
+  position="right" 
+  [style]="{width: '400px'}" 
+  [modal]="true" 
+  (onHide)="close()" 
+  [dismissible]="true" 
+  [showCloseIcon]="false"
+>
+  <!-- Header -->
+  <ng-template pTemplate="header">
+    <div class="place-info">
+      <div class="header-actions">
+
+      </div>
+      <img 
+      class="place-img"
+      [src]="(isEditing ? editedPlace?.imageURLs?.$values?.[0] : place?.imageURLs?.$values?.[0]) || 'assets/defaultplace.png'"
+      [alt]="isEditing ? editedPlace?.name : place?.name"
+      
+    />      <input *ngIf="isEditing && editedPlace" [(ngModel)]="editedPlace.name" class="edit-input title" />
+      <h2 *ngIf="!isEditing">{{ place?.name }}</h2>
+      <input *ngIf="isEditing && editedPlace" [(ngModel)]="editedPlace.categoryName" class="edit-input category" />
+      <p *ngIf="!isEditing" class="category">{{ place?.categoryName }}</p>
+      <textarea *ngIf="isEditing && editedPlace" [(ngModel)]="editedPlace.description" class="edit-input description"></textarea>
+      <p *ngIf="!isEditing" class="description">{{ place?.description }}</p>
+    </div>
+  </ng-template>
+
+  <!-- Sidebar Content -->
+  <div class="sidebar-content" #sidebarContent>
+    <!-- Non-Edit Mode -->
+    <div *ngIf="!isEditing">
+      <!-- Info Section -->
+      <div class="info-section">
+        <h4 class="section-title">Place Info</h4>
+        <div class="info-row">
+          <span class="label">Duration</span>
+          <span class="value">{{ place?.duration }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Open Time</span>
+          <span class="value">{{ place?.openTime }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Close Time</span>
+          <span class="value">{{ place?.closeTime }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Address</span>
+          <span class="value">{{ place?.address || 'Not specified' }}</span>
+        </div>
+        <div class="info-row" *ngIf="place?.locationLink">
+          <span class="label">Location Link</span>
+          <a [href]="place?.locationLink" target="_blank" class="value link">View on Map</a>
+        </div>
+        <div class="info-row">
+          <span class="label">Coordinates</span>
+          <span class="value">{{ place?.latitude }}, {{ place?.longitude }}</span>
+        </div>
+      </div>
+
+      <!-- Cultural Tips Section -->
+      <div class="tips" *ngIf="place && place.culturalTips && place.culturalTips.length > 0">
+        <h4>Cultural Tips</h4>
+        <ul class="tips-list">
+          <li *ngFor="let tip of place.culturalTips">{{ tip }}</li>
+        </ul>
+      </div>
+
+      <!-- Fees Section -->
+      <div class="fees-section">
+        <h4>Fees</h4>
+        <div class="info-row">
+          <span class="label">Tourist Adult</span>
+          <span class="value">{{ formatFeeDisplay(place?.touristAdult) }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Tourist Student</span>
+          <span class="value">{{ formatFeeDisplay(place?.touristStudent) }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Egyptian Adult</span>
+          <span class="value">{{ formatFeeDisplay(place?.egyptianAdult) }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Egyptian Student</span>
+          <span class="value">{{ formatFeeDisplay(place?.egyptianStudent) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isEditing && editedPlace">
+      <!-- Edit Place Info Section -->
+      <div class="edit-place-info">
+        <div class="section-title">Edit Place Info</div>
+
+        <div class="time-section">
+          <div>
+            <label for="duration">Duration</label>
+            <input type="text" id="duration" class="duration-input" [(ngModel)]="editedPlace.duration" placeholder="2-3 hours" />
+          </div>
+          <div>
+            <label for="openTime">Open Time</label>
+            <input type="time" id="openTime" [(ngModel)]="editedPlace.openTime" />
+          </div>
+          <div>
+            <label for="closeTime">Close Time</label>
+            <input type="time" id="closeTime" [(ngModel)]="editedPlace.closeTime" />
+          </div>
+        </div>
+
+        <!-- Location Section -->
+        <div class="location-section">
+          <div>
+            <label for="address">Address *</label>
+            <input type="text" id="address" [(ngModel)]="editedPlace.address" placeholder="Enter physical address" required />
+          </div>
+          <div>
+            <label for="locationLink">Location Link</label>
+            <input type="text" id="locationLink" [(ngModel)]="editedPlace.locationLink" placeholder="Google Maps or similar link" />
+          </div>
+          <div class="coordinates">
+            <div>
+              <label for="latitude">Latitude *</label>
+              <input type="number" id="latitude" [(ngModel)]="editedPlace.latitude" placeholder="e.g. 25.7127" required step="any" />
+            </div>
+            <div>
+              <label for="longitude">Longitude *</label>
+              <input type="number" id="longitude" [(ngModel)]="editedPlace.longitude" placeholder="e.g. 32.6241" required step="any" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Mode Culture Tips -->
+        <div class="tips-list">
+          <h4>Cultural Tips</h4>
+          <div class="tip-item" *ngFor="let tip of editedPlace.culturalTips; let i = index">
+            <input type="text" class="tip-input" [(ngModel)]="editedPlace.culturalTips[i]" placeholder="Enter cultural tip">
+            <button class="remove-tip-btn" (click)="removeTip(i)">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <button class="add-tip-btn" (click)="addTip()">
+            <i class="fas fa-plus"></i>
+            Add Cultural Tip
+          </button>
+        </div>
+
+        <!-- Edit Fees Section -->
+        <div class="fees-section">
+          <h4>Fees</h4>
+          <div class="info-row">
+            <span class="label">Tourist Adult</span>
+            <input type="number" class="edit-input" [(ngModel)]="editedPlace.touristAdult" />
+          </div>
+          <div class="info-row">
+            <span class="label">Tourist Student</span>
+            <input type="number" class="edit-input" [(ngModel)]="editedPlace.touristStudent" />
+          </div>
+          <div class="info-row">
+            <span class="label">Egyptian Adult</span>
+            <input type="number" class="edit-input" [(ngModel)]="editedPlace.egyptianAdult" />
+          </div>
+          <div class="info-row">
+            <span class="label">Egyptian Student</span>
+            <input type="number" class="edit-input" [(ngModel)]="editedPlace.egyptianStudent" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Media Section (Common for both views) -->
+    <div class="media">
+      <h4>Media</h4>
+      <div class="media-grid">
+        <!-- Existing images -->
+        <div class="media-item" *ngFor="let photo of getCurrentImages(); let i = index">
+          <img [src]="photo" 
+               [alt]="'Place image ' + (i + 1)" 
+               (error)="handleImageError($event, photo)" />
+          <button *ngIf="isEditing" class="remove-media" (click)="removeMedia(photo)">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+    
+        <!-- Preview of newly selected images (edit mode only) -->
+        <ng-container *ngIf="isEditing">
+          <div class="media-item" *ngFor="let preview of previewImages">
+            <img [src]="preview" alt="New upload preview" />
+            <button class="remove-media" (click)="removePreview(preview)">
+              <i class="pi pi-times"></i>
+            </button>
+          </div>
+        </ng-container>
+    
+        <!-- Add new images button (edit mode only) -->
+        <div *ngIf="isEditing" class="add-media">
+          <input #fileInput type="file" id="mediaUpload" multiple 
+                 (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+          <button class="add-media-btn" (click)="fileInput.click()">
+            <i class="pi pi-plus"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <ng-container *ngIf="!isEditing">
+        <button class="action-btn edit" (click)="editPlace()">
+          Edit Place
+        </button>
+        <button 
+          pButton
+          type="button"
+          label="Delete"
+          class="p-button-danger"
+          (click)="confirmDelete($event)">
+        </button>
+      </ng-container>
+      
+      <div class="edit-actions" *ngIf="isEditing">
+        <button class="action-btn save" (click)="saveChanges()">
+          Save
+        </button>
+        <button class="action-btn cancel" (click)="close()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</p-sidebar>

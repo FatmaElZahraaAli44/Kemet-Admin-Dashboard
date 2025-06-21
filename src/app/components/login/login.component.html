@@ -1,0 +1,57 @@
+<div class="login-container">
+  <div class="login-content">
+    <div class="login-form-container">
+      <h1>Welcome Back</h1>
+      <p class="subtitle">Enter your email and password to sign in</p>
+
+      <div class="form-wrapper">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              formControlName="email"
+              placeholder="Your email address"
+              [ngClass]="{'is-invalid': username?.invalid && username?.touched}">
+            <div class="error-message" *ngIf="username?.invalid && username?.touched">
+              <span *ngIf="username?.errors?.['required']">Email is required</span>
+              <span *ngIf="username?.errors?.['email']">Please enter a valid email</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              formControlName="password"
+              placeholder="Your password"
+              [ngClass]="{'is-invalid': password?.invalid && password?.touched}">
+            <div class="error-message" *ngIf="password?.invalid && password?.touched">
+              Password is required
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            class="sign-in-button"
+            [disabled]="loginForm.invalid || isLoading">
+            <span *ngIf="!isLoading">SIGN IN</span>
+            <span *ngIf="isLoading" class="loading-spinner"></span>
+          </button>
+          
+          <!-- Display error message here -->
+          <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="background-container">
+      <div class="wave-pattern"></div>
+      <img src="assets/images/kemet-logo.png" alt="KEMET" class="logo">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,156 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="close()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <h2>Add Place</h2>
+      
+      <div class="form-layout">
+        <!-- Column 1: Photo -->
+        <div class="column photo-column">
+          <div class="photo-wrapper">
+            <img [src]="place.photo" alt="Place Photo" class="place-photo" />
+          </div>
+        </div>
+  
+        <!-- Column 2: Main Details -->
+        <div class="column main-info">
+          <div class="form-group">
+            <label for="placeName">Name *</label>
+            <input type="text" id="placeName" [(ngModel)]="place.name" placeholder="Luxor Museum" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select 
+              id="category" 
+              [(ngModel)]="place.CategoryName" 
+              (ngModelChange)="onCategoryChange($event)"
+              required 
+              class="form-select"
+              name="CategoryName"
+            >
+              <option value="">Select a category</option>
+              <option *ngFor="let cat of categories" [value]="cat.value">
+                {{cat.label}}
+              </option>
+            </select>
+          </div>
+  
+          <div class="form-group">
+            <label>Cultural Tips</label>
+            <div class="tips-list">
+              <div class="tip-item" *ngFor="let tip of culturalTipsList; let i = index; trackBy: trackByFn">
+                <input type="text" class="tip-input"
+                       [(ngModel)]="culturalTipsList[i]"
+                       #tipInput
+                       placeholder="Enter cultural tip">
+                <button class="remove-tip-btn" (click)="removeTip(i)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+              <button class="add-tip-btn" (click)="addTip()">
+                <i class="fas fa-plus"></i>
+                Add Cultural Tip
+              </button>
+            </div>
+          </div>
+          
+          
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" [(ngModel)]="place.description" rows="4"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Address *</label>
+            <input type="text" id="address" [(ngModel)]="place.Address" placeholder="Enter physical address" required />
+          </div>
+
+          <div class="form-group">
+            <label for="locationLink">Location Link</label>
+            <input type="text" id="locationLink" [(ngModel)]="place.LocationLink" placeholder="Google Maps or similar link" />
+          </div>
+
+          <div class="location-coordinates">
+            <div class="form-group">
+              <label for="latitude">Latitude *</label>
+              <input type="number" id="latitude" [(ngModel)]="place.Latitude" placeholder="e.g. 25.7127" required step="any" />
+            </div>
+
+            <div class="form-group">
+              <label for="longitude">Longitude *</label>
+              <input type="number" id="longitude" [(ngModel)]="place.Longitude" placeholder="e.g. 32.6241" required step="any" />
+            </div>
+          </div>
+  
+          <div class="form-group">
+            <label>Upload File</label>
+            <input 
+              type="file" 
+              (change)="onFileChange($event)" 
+              accept="image/jpeg,image/png"
+              multiple
+              [attr.max]="9 - photoCount"
+            />
+            <p class="upload-hint">({{photoCount}}/9) JPG, PNG.</p>
+          </div>
+
+          <div class="photos-preview" *ngIf="place.photos.length > 0">
+            <div class="photos-grid">
+              <div class="photo-item" *ngFor="let photo of place.photos; let i = index">
+                <img [src]="photo" [alt]="'Photo ' + (i + 1)" />
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Column 3: Timing & Prices -->
+        <div class="column time-price">
+          <div class="form-group">
+            <label for="openTime">Open Time (24h)</label>
+            <select id="openTime" class="time-select" [(ngModel)]="place.openTime" name="openTime">
+              <option *ngFor="let hour of hours" [value]="hour">{{hour}}</option>
+            </select>
+          </div>
+  
+          <div class="form-group">
+            <label for="closeTime">Close Time (24h)</label>
+            <select id="closeTime" class="time-select" [(ngModel)]="place.closeTime" name="closeTime">
+              <option *ngFor="let hour of hours" [value]="hour">{{hour}}</option>
+            </select>
+          </div>
+  
+          <div class="form-group">
+            <label for="duration">Duration</label>
+            <input type="text" id="duration" [(ngModel)]="place.duration" placeholder="2 - 3 hours" />
+          </div>
+  
+          <div class="form-group">
+            <label for="touristAdult">Tourist Adult</label>
+            <input type="number" id="touristAdult" [(ngModel)]="place.touristAdult" />
+          </div>
+  
+          <div class="form-group">
+            <label for="touristStudent">Tourist Student</label>
+            <input type="number" id="touristStudent" [(ngModel)]="place.touristStudent" />
+          </div>
+  
+          <div class="form-group">
+            <label for="egyptianAdult">Egyptian Adult</label>
+            <input type="number" id="egyptianAdult" [(ngModel)]="place.egyptianAdult" />
+          </div>
+  
+          <div class="form-group">
+            <label for="egyptianStudent">Egyptian Student</label>
+            <input type="number" id="egyptianStudent" [(ngModel)]="place.egyptianStudent" />
+          </div>
+  
+          <button (click)="save()" class="btn-save" [disabled]="loading">
+            <span *ngIf="!loading">Save</span>
+            <span *ngIf="loading">Saving...</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<p-toast></p-toast>
+  

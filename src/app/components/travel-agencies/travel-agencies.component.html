@@ -1,0 +1,120 @@
+<div class="travel-agencies-dashboard">
+    <div class="header">
+      <div class="agencies-summary">
+        <div class="icon-and-title">
+          <div class="icon">
+            <span class="material-icons">business</span>
+          </div>
+          <div class="title-and-count">
+            <h2>Travel Agencies</h2>
+            <div class="count">{{ totalAgencies }}</div>
+          </div>
+        </div>
+      </div>
+      <button class="add-agency-btn" (click)="openRegisterForm()">Add New Agency</button>
+    </div>
+  
+    <!-- Title and search on the same line -->
+    <div class="title-search-row">
+      <h2>Travel Agencies List</h2>
+      
+      <!-- Search input -->
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <span class="material-icons search-icon">search</span>
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Search agencies..." 
+            [(ngModel)]="searchValue" 
+            (input)="dt1.filterGlobal(searchValue, 'contains')"
+          >
+          <button *ngIf="searchValue" class="clear-search" (click)="searchValue = ''; dt1.filterGlobal('', 'contains')">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <p-table #dt1 [value]="agencies" dataKey="id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [globalFilterFields]="['userName', 'phoneNumber', 'email']" [sortMode]="'single'" [sortField]="sortField" [sortOrder]="sortOrder" (onSort)="onSort($event)">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="min-width:10rem" pSortableColumn="userName">
+                    <div class="flex items-center">
+                        Agency Name
+                        <p-sortIcon field="userName"></p-sortIcon>
+                    </div>
+                </th>
+                <th style="min-width:10rem" pSortableColumn="email">
+                    <div class="flex items-center">
+                        Email
+                        <p-sortIcon field="email"></p-sortIcon>
+                    </div>
+                </th>
+                <th style="min-width:10rem" pSortableColumn="phoneNumber">
+                    <div class="flex items-center">
+                        Phone Number
+                        <p-sortIcon field="phoneNumber"></p-sortIcon>
+                    </div>
+                </th>
+                <th style="min-width:10rem" pSortableColumn="averageRating">
+                    <div class="flex items-center">
+                        Rating
+                        <p-sortIcon field="averageRating"></p-sortIcon>
+                    </div>
+                </th>
+                <th style="width: 10rem">
+                    <div class="flex items-center">
+                        Actions
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-agency>
+            <tr>
+                <td>
+                    <div class="agency-info">
+                        <div class="agency-avatar">
+                            <img [src]="agency.profileImage || defaultImage" 
+                            (error)="handleImageError($event)" 
+                            alt="Agency" 
+                            class="avatar-img">                        </div>
+                        <span class="agency-name">{{ agency.agencyName }}</span>
+                    </div>
+                </td>
+                <td>{{ agency.email }}</td>
+                <td>{{ agency.phoneNumber }}</td>
+                <td>
+                    <div class="flex align-items-center gap-1">
+                        <p-rating [ngModel]="agency.rate" [readonly]="true" [cancel]="false"></p-rating>
+                    </div>
+                </td>
+                <td>
+                    <div class="flex gap-2">
+                        <button pButton icon="pi pi-external-link" class="p-button-rounded p-button-text" (click)="onViewDetails(agency)"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="5">No agencies found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+      
+    <!-- Add the agency details component here -->
+    <app-agency-details
+        [agency]="selectedAgency"
+        [(visible)]="showSidebar"
+        (close)="onCloseSidebar()"
+    ></app-agency-details>
+    
+    <!-- Add the agency register component here -->
+    <app-agency-register></app-agency-register>
+    
+    <!-- Add toast component -->
+    <p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog>
+</div>
+

@@ -1,0 +1,78 @@
+<p-toast></p-toast>
+<p-confirmDialog 
+  [style]="{width: '450px'}" 
+  header="Confirm Delete" 
+  icon="pi pi-exclamation-triangle"
+  acceptLabel="Yes"
+  rejectLabel="No">
+</p-confirmDialog>
+
+<p-sidebar [(visible)]="visible" [style]="{width:'400px'}" position="right" [modal]="true">
+    <div class="agency-info">
+        <div class="header-actions">
+            <!-- Edit button removed -->
+        </div>
+<!-- Template -->
+<img [src]="agency?.profileImage || defaultAgencyImage" 
+     (error)="handleImageError($event)"
+     alt="Agency Logo" 
+     class="profile-img">        <h2>{{agency?.agencyName}}</h2>
+        <div class="description">{{agency?.description}}</div>
+    </div>
+
+    <div class="sidebar-content">
+        <div class="info-section">
+            <h4>Contact Information</h4>
+            <div class="info-row">
+                <span class="label">Email</span>
+                <span class="value">{{agency?.email}}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Phone</span>
+                <span class="value">{{agency?.phoneNumber}}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Address</span>
+                <span class="value">{{agency?.location}}</span>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h4>Agency Details</h4>
+
+            <div class="info-row">
+                <span class="label">Rating</span>
+                <span class="value">{{agency?.rate}}</span>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h4>Social Media</h4>
+            <div class="info-row">
+                <span class="label">Facebook</span>
+                <span class="value">
+                    <a *ngIf="agency?.facebookURL" [href]="agency?.facebookURL || '#'" target="_blank" class="link-button">
+                        <button pButton label="Visit Facebook" icon="pi pi-facebook" class="p-button-text p-button-sm"></button>
+                    </a>
+                    <span *ngIf="!agency?.facebookURL">Not available</span>
+                </span>
+            </div>
+            <div class="info-row">
+                <span class="label">Instagram</span>
+                <span class="value">
+                    <a *ngIf="agency?.instagramURL" [href]="agency?.instagramURL || '#'" target="_blank" class="link-button">
+                        <button pButton label="Visit Instagram" icon="pi pi-instagram" class="p-button-text p-button-sm"></button>
+                    </a>
+                    <span *ngIf="!agency?.instagramURL">Not available</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button pButton label="Contact Agency" icon="pi pi-envelope" class="contact-btn p-button-warning" (click)="onContact()"></button>
+            <!-- Delete button removed -->
+        </div>
+    </div>
+</p-sidebar>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog> 

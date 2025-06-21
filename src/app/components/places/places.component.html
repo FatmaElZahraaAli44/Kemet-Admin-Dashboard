@@ -1,0 +1,95 @@
+<div class="places-content">
+<div class="places-dashboard">
+  <!-- Header -->
+  <div class="header">
+    <div class="places-summary">
+      <div class="icon-and-title">
+        <div class="icon">
+          <span class="material-icons">place</span>
+        </div>
+        <div class="title-and-count">
+          <h2>Places</h2>
+          <div class="count">{{ totalPlaces }}</div>
+        </div>
+      </div>
+    </div>
+    <button class="add-button" (click)="openAddPlaceModal()">Add Place</button>
+  </div>
+
+  <!-- Title and search -->
+  <div class="title-search-row">
+    <h2>Places List</h2>
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <span class="material-icons search-icon">search</span>
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search places..." 
+          [(ngModel)]="searchValue" 
+          (input)="dt1.filterGlobal(searchValue, 'contains')"
+        >
+        <button *ngIf="searchValue" class="clear-search" (click)="searchValue = ''; dt1.filterGlobal('', 'contains')">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PrimeNG Table -->
+  <p-table 
+    #dt1 
+    [value]="places" 
+    dataKey="id" 
+    [rows]="pageSize" 
+    [rowsPerPageOptions]="[5, 10, 20]" 
+    [paginator]="true" 
+    [globalFilterFields]="['name', 'categoryName', 'description', 'duration']" 
+    [sortMode]="'single'" 
+>
+
+    
+    <!-- Custom place cards inside table body -->
+    <ng-template pTemplate="body" let-place>
+      <tr>
+        <td colspan="100%">
+          <div class="places-list">
+            <div class="place-card">
+              <img 
+              class="place-image"
+              [src]="(place.imageURLs?.$values?.length > 0 && place.imageURLs?.$values[0]) ? place.imageURLs.$values[0] : 'assets/images/defaultplace.png'"
+              [alt]="place.name"
+              (error)="handleImageError($event)"
+            >
+              <h4 class="place-name">{{ place.name }}</h4>
+              <p class="place-category">{{ place.categoryName }}</p>
+              <p class="duration">{{ place.duration }}</p>
+              <div class="rating">
+                <span *ngFor="let star of getStars(place.averageRating)">{{ star }}</span>
+              </div>
+              <button class="details-button" (click)="onViewPlace(place)">View Details</button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+  <!-- Place details side panel -->
+  <app-place-details
+    *ngIf="selectedPlace"
+    [(isOpen)]="showSidebar"
+    [place]="selectedPlace"
+    (placeDeleted)="onPlaceDeleted($event)"
+    (placeUpdated)="onPlaceUpdated()"
+    (closeModal)="closeSidebar()">
+  </app-place-details>
+
+  <!-- Add place modal -->
+  <app-add-place-modal
+    #addPlaceModal
+    (placeAdded)="onPlaceAdded($event)">
+  </app-add-place-modal>
+</div>
+</div>

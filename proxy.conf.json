@@ -1,0 +1,25 @@
+{
+    "/api": {
+      "target": "https://kemet-server.runasp.net",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug",
+      "headers": {
+        "Origin": "https://kemet-server.runasp.net",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+        "Access-Control-Allow-Credentials": "true"
+      }
+    },
+    "/images": {
+      "target": "https://kemet-server.runasp.net",
+      "secure": true,
+      "changeOrigin": true,
+      "logLevel": "debug",
+      "headers": {
+        "Accept": "image/*",
+        "Access-Control-Allow-Origin": "*"
+      }
+    }
+  }

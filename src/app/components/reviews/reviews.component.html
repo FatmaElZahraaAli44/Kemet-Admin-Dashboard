@@ -1,0 +1,142 @@
+<div class="reviews-container">
+  <div class="reviews-header">
+    <div class="reviews-summary">
+      <div class="icon-and-title">
+        <div class="icon">
+          <span class="material-icons">star</span>
+        </div>
+        <div class="title-and-count">
+          <h2>Reviews</h2>
+          <div class="count">{{ filteredReviews.length }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category-filter">
+    <div class="category-buttons">
+      <p-selectButton 
+        [options]="categories" 
+        [(ngModel)]="selectedCategory" 
+        [multiple]="false" 
+        optionLabel="name" 
+        optionValue="value"
+        (onChange)="onCategoryChange()">
+      </p-selectButton>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <p-table 
+      [value]="filteredReviews" 
+      [tableStyle]="{ 'min-width': '50rem' }" 
+      [loading]="isLoading"
+      styleClass="p-datatable-striped"
+      [scrollable]="true"
+      [responsive]="true"
+      [sortMode]="'single'"
+      [sortField]="sortField"
+      [sortOrder]="sortOrder"
+      (onSort)="onSort($event)">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="userName" style="width: 10%">
+            User <p-sortIcon field="userName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="createdAt" style="width: 10%">
+            Date <p-sortIcon field="createdAt"></p-sortIcon>
+          </th>
+          <th pSortableColumn="itemName" style="width: 15%">
+            Item Name <p-sortIcon field="itemName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="rating" style="width: 5%">
+            Rating <p-sortIcon field="rating"></p-sortIcon>
+          </th>
+          <th pSortableColumn="comment" style="width: 50%">
+            Comment <p-sortIcon field="comment"></p-sortIcon>
+          </th>
+          <th style="width: 10%">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-review>
+        <tr>
+          <td style="width: 10%">{{ review.userName || 'Anonymous' }}</td>
+          <td style="width: 10%">{{ review.createdAt | date:'medium' }}</td>
+          <td style="width: 15%">{{ review.itemName || 'Unknown Item' }}</td>
+          <td style="width: 5%">
+            <p-rating [ngModel]="review.rating" [readonly]="true" [cancel]="false"></p-rating>
+          </td>
+          <td style="width: 50%; white-space: normal; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">
+            <!-- Truncated comment display -->
+            <div class="comment-text" [title]="review.comment">
+              {{ review.comment | slice:0:100 }}...
+            </div>
+          </td>
+          <td style="width: 10%">
+            <div class="action-icons">
+              <div class="action-icon view-icon" (click)="viewReview(review)">
+                <i class="pi pi-external-link"></i>
+              </div>
+              <div class="action-icon delete-icon" (click)="deleteReview(review)">
+                <i class="pi pi-trash"></i>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" class="text-center">No reviews found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <i class="pi pi-exclamation-triangle"></i>
+    <span>{{ error }}</span>
+  </div>
+
+  <p-confirmDialog></p-confirmDialog>
+  <p-toast></p-toast>
+
+  <p-dialog 
+    [(visible)]="displayReviewModal" 
+    [modal]="true" 
+    [style]="{width: '90%', maxWidth: '800px'}" 
+    [draggable]="false" 
+    [resizable]="false"
+    [dismissableMask]="true"
+    [closeOnEscape]="true"
+    [header]="selectedReview?.reviewType === 'Activity' ? 'Activity Review' : 'Place Review'">
+    <div class="review-modal-content" *ngIf="selectedReview">
+        <div class="review-header">
+            <div class="user-info">
+                <img [src]="selectedReview.userImageURL" 
+                     alt="User Profile" 
+                     class="user-image"
+                     onerror="this.src='assets/images/default-profile.png'">
+                <div class="user-details">
+                    <h3>{{selectedReview.userName}}</h3>
+                    <p class="review-date">{{formatDate(selectedReview.date)}}</p>
+                    <p class="visitor-type">{{selectedReview.visitorType}}</p>
+                </div>
+            </div>
+            <div class="review-rating">
+                <p-rating [ngModel]="selectedReview.rating" [readonly]="true" [cancel]="false"></p-rating>
+            </div>
+        </div>
+
+        <div class="review-body">
+          <div class="review-meta">
+            <span class="item-name">{{selectedReview.itemName}}</span>
+        </div>
+            <h2 class="review-title">{{selectedReview.reviewTitle}}</h2>
+
+            <p class="review-comment">{{selectedReview.comment}}</p>
+        </div>
+    </div>
+  </p-dialog>
+</div>

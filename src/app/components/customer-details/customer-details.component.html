@@ -1,0 +1,139 @@
+<p-toast></p-toast>
+<p-confirmDialog 
+  [style]="{width: '450px'}" 
+  header="Confirm Delete" 
+  icon="pi pi-exclamation-triangle"
+  acceptLabel="Yes"
+  rejectLabel="No">
+</p-confirmDialog>
+
+<p-sidebar 
+  [(visible)]="isOpen" 
+  position="right" 
+  [style]="{width: '400px'}" 
+  [modal]="true" 
+  (onHide)="onCloseModal()" 
+  [dismissible]="true" 
+  [showCloseIcon]="false"
+>
+  <ng-template pTemplate="header">
+    <div class="customer-info">
+      <img [src]="customer?.imageURL || 'assets/images/default-profile.png'" 
+      (error)="handleImageError($event)"
+      class="profile-img" />      <p class="username">{{'@' + customer?.userName}}</p>
+      <div class="header-actions" *ngIf="!isEditing">
+      </div>
+    </div>
+  </ng-template>
+
+  <div class="sidebar-content">
+    <div class="info-section" *ngIf="!isEditing">
+      <h4>Personal Information</h4>
+      <div class="info-row">
+        <span class="label">User Name</span>
+        <span class="value">{{ customer?.userName }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">ID</span>
+        <span class="value">{{ customer?.id }}</span>
+      </div>
+      <div class="info-row" *ngIf="customer?.firstName">
+        <span class="label">First Name</span>
+        <span class="value">{{ customer?.firstName }}</span>
+      </div>
+      <div class="info-row" *ngIf="customer?.lastName">
+        <span class="label">Last Name</span>
+        <span class="value">{{ customer?.lastName }}</span>
+      </div>
+      <div class="info-row" *ngIf="customer?.gender">
+        <span class="label">Gender</span>
+        <span class="value">{{ customer?.gender }}</span>
+      </div>
+      <div class="info-row" *ngIf="customer?.dateOfBirth">
+        <span class="label">Date of Birth</span>
+        <span class="value">{{ customer?.dateOfBirth }}</span>
+      </div>
+      <div class="info-row" *ngIf="customer?.nationality">
+        <span class="label">Nationality</span>
+        <span class="value">{{ customer?.nationality }}</span>
+      </div>
+      <div class="info-row" *ngIf="customer?.location">
+        <span class="label">Location</span>
+        <span class="value">{{ customer?.location }}</span>
+      </div>
+    </div>
+
+    <div class="info-section" *ngIf="!isEditing">
+      <h4>Contact Information</h4>
+      <div class="info-row">
+        <span class="label">Phone Number</span>
+        <span class="value">{{ customer?.phoneNumber }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Email</span>
+        <span class="value">{{ customer?.email }}</span>
+      </div>
+    </div>
+
+    <div class="edit-form" *ngIf="isEditing && editedCustomer">
+      <div class="info-section">
+        <h4>Personal Information</h4>
+        <div class="p-field">
+          <label for="firstName">First Name</label>
+          <input id="firstName" type="text" pInputText [(ngModel)]="editedCustomer.firstName">
+        </div>
+        <div class="p-field">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" type="text" pInputText [(ngModel)]="editedCustomer.lastName">
+        </div>
+        <div class="p-field">
+          <label for="userName">Username</label>
+          <input id="userName" type="text" pInputText [(ngModel)]="editedCustomer.userName">
+        </div>
+        <div class="p-field">
+          <label for="gender">Gender</label>
+          <p-dropdown id="gender" [options]="['Male', 'Female', 'Other']" [(ngModel)]="editedCustomer.gender"></p-dropdown>
+        </div>
+        <div class="p-field">
+          <label for="dateOfBirth">Date of Birth</label>
+          <p-calendar id="dateOfBirth" [(ngModel)]="editedCustomer.dateOfBirth"></p-calendar>
+        </div>
+        <div class="p-field">
+          <label for="nationality">Nationality</label>
+          <input id="nationality" type="text" pInputText [(ngModel)]="editedCustomer.nationality">
+        </div>
+        <div class="p-field">
+          <label for="location">Location</label>
+          <input id="location" type="text" pInputText [(ngModel)]="editedCustomer.location">
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h4>Contact Information</h4>
+        <div class="p-field">
+          <label for="phoneNumber">Phone Number</label>
+          <input id="phoneNumber" type="tel" pInputText [(ngModel)]="editedCustomer.phoneNumber">
+        </div>
+        <div class="p-field">
+          <label for="email">Email</label>
+          <input id="email" type="email" pInputText [(ngModel)]="editedCustomer.email">
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <p-button icon="pi pi-check" label="Save" (onClick)="saveCustomer()"></p-button>
+        <p-button icon="pi pi-times" label="Cancel" (onClick)="cancelEdit()" [outlined]="true"></p-button>
+      </div>
+    </div>
+
+    <div class="action-buttons" *ngIf="!isEditing">
+      <p-button 
+        styleClass="contact-btn"
+        label="Contact User" 
+        severity="warning" 
+        [outlined]="false"
+        (onClick)="contactUser()">
+      </p-button>
+    </div>
+  </div>
+</p-sidebar> 

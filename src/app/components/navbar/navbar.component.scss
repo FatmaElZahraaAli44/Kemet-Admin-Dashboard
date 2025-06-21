@@ -1,0 +1,109 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    padding: 0 30px;
+    background: #ffffff;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-shrink: 0;
+  
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+  
+      .navbar-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+      }
+    }
+  
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+  
+      .search-container {
+        position: relative;
+  
+        .search-input {
+          padding: 8px 15px 8px 35px;
+          border-radius: 20px;
+          border: 1px solid #e0e0e0;
+          background-color: #f5f5f5;
+          font-size: 14px;
+          transition: all 0.3s;
+          width: 200px;
+  
+          &:focus {
+            outline: none;
+            width: 250px;
+            background-color: #fff;
+            box-shadow: 0 0 0 2px rgba(251, 188, 5, 0.2);
+          }
+  
+          &::placeholder {
+            color: #999;
+          }
+        }
+  
+        &::before {
+          content: 'search';
+          font-family: 'Material Icons';
+          position: absolute;
+          left: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #999;
+          font-size: 18px;
+        }
+      }
+  
+      .profile-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+  
+        .profile-img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid #fbbc05;
+        }
+  
+        .profile-name {
+          font-weight: 500;
+          color: #333;
+        }
+      }
+    }
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .navbar {
+      padding: 0 15px;
+  
+      .navbar-right {
+        gap: 15px;
+  
+        .search-container {
+          .search-input {
+            width: 150px;
+  
+            &:focus {
+              width: 180px;
+            }
+          }
+        }
+      }
+    }
+  }
+  

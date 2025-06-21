@@ -1,0 +1,105 @@
+<p-toast></p-toast>
+
+<div class="activities-dashboard">
+  <!-- Header -->
+  <div class="header">
+    <div class="activities-summary">
+      <div class="icon-and-title">
+        <div class="icon">
+          <span class="material-icons">directions_run</span>
+        </div>
+        <div class="title-and-count">
+          <h2>Activities</h2>
+          <div class="count">{{ totalRecords }}</div>
+        </div>
+      </div>
+    </div>
+    <button class="add-button"  (click)="openAddActivityModal()">Add Activity</button>
+  </div>
+
+  <!-- Title and search -->
+  <div class="title-search-row">
+    <h2>Activities List</h2>
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <span class="material-icons search-icon">search</span>
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search activities..." 
+          [(ngModel)]="searchQuery" 
+          (input)="onGlobalFilter(dt1, $event)"
+        >
+        <button *ngIf="searchQuery" class="clear-search" (click)="searchQuery = ''; dt1.filterGlobal('', 'contains')">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PrimeNG Table -->
+  <p-table 
+    #dt1 
+    [value]="activities" 
+    dataKey="activityId" 
+    [rows]="pageSize" 
+    [rowsPerPageOptions]="[5, 10, 20]" 
+    [loading]="loading" 
+    [paginator]="true" 
+    [globalFilterFields]="['name', 'description', 'duration']" 
+    [sortMode]="'single'"
+  >
+    <!-- Custom activity cards inside table body -->
+    <ng-template pTemplate="body" let-activity>
+      <tr>
+        <td colspan="100%">
+          <div class="activities-list">
+            <div class="activity-card">
+              <img 
+              class="activity-image"
+              [src]="activity?.imageURLs?.$values?.[0] || 'assets/images/defaultactivity.png'"
+              [alt]="activity?.name || 'Activity image'"
+              (error)="handleImageError($event)"
+            />
+            
+              <h4 class="activity-name">{{ activity.name }}</h4>
+              <p class="activity-category">{{ activity.categoryName }}</p>
+              <p class="duration">{{ activity.duration }}</p>
+              <div class="rating">
+                <span *ngFor="let star of getStars(activity.rating || 0)">{{ star }}</span>
+              </div>
+              <button class="details-button" (click)="editActivity(activity)">View Details</button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- Empty message template -->
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="100%" class="text-center p-4">
+          No activities found.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- Activity details side panel -->
+  <app-activity-details
+    *ngIf="selectedActivity"
+    [activity]="selectedActivity"
+    [isOpen]="showSidebar"
+    (isOpenChange)="onSidebarChange($event)"
+    (activityDeleted)="refreshActivities()"
+    (activityUpdated)="onActivityUpdated()"
+    (closeModal)="closeSidebar()">
+  </app-activity-details>
+
+  <!-- Add activity modal -->
+  <app-add-activity-modal
+    #addActivityModal>
+  </app-add-activity-modal>
+
+  <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+</div> 

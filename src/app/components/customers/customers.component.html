@@ -1,0 +1,106 @@
+<div class="customers-dashboard">
+    <div class="header">
+      <div class="customers-summary">
+        <div class="icon-and-title">
+          <div class="icon">
+            <span class="material-icons">people</span>
+          </div>
+          <div class="title-and-count">
+            <h2>Customers</h2>
+            <div class="count">{{ totalCustomers }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Title and search on the same line -->
+    <div class="title-search-row">
+      <h2>Customers List</h2>
+      
+      <!-- Search input -->
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <span class="material-icons search-icon">search</span>
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Search customers..." 
+            [(ngModel)]="searchValue" 
+            (input)="dt1.filterGlobal(searchValue, 'contains')"
+          >
+          <button *ngIf="searchValue" class="clear-search" (click)="searchValue = ''; dt1.filterGlobal('', 'contains')">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <p-table #dt1 [value]="customers" dataKey="id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true" [globalFilterFields]="['userName', 'email', 'phoneNumber']" [sortMode]="'single'" [sortField]="sortField" [sortOrder]="sortOrder" (onSort)="onSort($event)">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="min-width:15rem" pSortableColumn="userName">
+                    <div class="flex items-center">
+                        User Name
+                        <p-sortIcon field="userName"></p-sortIcon>
+                    </div>
+                </th>
+                <th style="min-width:15rem" pSortableColumn="email">
+                    <div class="flex items-center">
+                        E-Mail
+                        <p-sortIcon field="email"></p-sortIcon>
+                    </div>
+                </th>
+                <th style="min-width:15rem" pSortableColumn="phoneNumber">
+                    <div class="flex items-center">
+                        Phone Number
+                        <p-sortIcon field="phoneNumber"></p-sortIcon>
+                    </div>
+                </th>
+                <th style="width: 10rem">
+                    <div class="flex items-center">
+                        Actions
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer>
+            <tr>
+                <td>
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <img 
+                            [src]="customer.imageURL || defaultProfileImage" 
+                            (error)="handleImageError($event)" 
+                            alt="Profile" 
+                            class="avatar-img"
+                        >                        </div>
+                        <span class="username">{{ customer.userName }}</span>
+                    </div>
+                </td>
+                <td>
+                    {{ customer.email }}
+                </td>
+                <td>
+                    {{ customer.phoneNumber }}
+                </td>
+                <td>
+                    <div class="flex gap-2">
+                        <button pButton icon="pi pi-external-link" class="p-button-rounded p-button-text" (click)="viewUser(customer)"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No customers found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+      
+    <!-- Add the customer details component here -->
+    <app-customer-details></app-customer-details>
+    
+    <!-- Add toast component -->
+    <p-toast></p-toast>
+</div>
+  

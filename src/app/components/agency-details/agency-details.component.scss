@@ -1,0 +1,316 @@
+.agency-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  border-bottom: 1px solid #e9ecef;
+  padding: 1rem;
+  position: relative;
+
+  .header-actions {
+    position: absolute;
+    top: 10px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+    z-index: 1;
+    margin-top: 1rem;
+  }
+
+  .profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .agency-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0.5rem 0;
+  }
+
+  .description {
+    color: #6c757d;
+    margin: 0.5rem 0;
+  }
+}
+
+.sidebar-content {
+  padding: 1rem;
+  height: 100vh;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #f59e0b;
+  }
+
+  .info-section {
+    margin-bottom: 2rem;
+
+    h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f8f9fa;
+
+      .label {
+        color: #6c757d;
+        font-weight: 500;
+      }
+
+      .value {
+        color: #495057;
+      }
+    }
+  }
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--surface-border);
+  margin: 0;
+}
+
+:host ::ng-deep {
+  .p-sidebar {
+    .p-sidebar-header {
+      padding: 0;
+    }
+
+    .p-sidebar-footer {
+      display: none !important;
+    }
+    
+    .p-sidebar-content {
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .p-confirm-dialog {
+    .p-dialog-content {
+      .p-confirm-dialog-message {
+        color: #333;
+      }
+    }
+
+    .p-dialog-footer {
+      .p-button {
+        border-radius: 50px;
+        height: 35px;
+
+        &.p-confirm-dialog-accept {
+          background: #f59e0b !important;
+          border-color: #f59e0b !important;
+          color: #fff !important;
+
+          &:hover {
+            background: darken(#f59e0b, 5%) !important;
+            border-color: darken(#f59e0b, 5%) !important;
+          }
+        }
+
+        &.p-confirm-dialog-reject {
+          background: transparent !important;
+          border-color: #f59e0b !important;
+          color: #f59e0b !important;
+
+          &:hover {
+            background: rgba(245, 158, 11, 0.1) !important;
+          }
+        }
+      }
+    }
+  }
+
+  .contact-btn.p-button-warning {
+    background-color: #f59e0b !important;
+    color: white !important;
+    font-weight: 500;
+    font-size: 14px;
+    border: none !important;
+    width: 180px;
+    height: 35px;
+    border-radius: 50px;
+    margin: 0px;
+
+    &:hover {
+      background-color: darken(#f59e0b, 5%) !important;
+    }
+  }
+
+  .delete-btn.p-button-danger {
+    background-color: transparent !important;
+    color: var(--red-500) !important;
+    font-weight: 500;
+    font-size: 14px;
+    border: none !important;
+    width: 180px;
+    height: 35px;
+    border-radius: 50px;
+    margin: 0px;
+  }
+}
+
+// Responsive design for tablets and smaller screens
+@media (max-width: 1024px) {
+  .agency-info {
+    .profile-img {
+      width: 80px;
+      height: 80px;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+    }
+
+    .agency-name {
+      font-size: 1.1rem;
+    }
+  }
+
+  .sidebar-content {
+    .section-title {
+      font-size: 1.1rem;
+    }
+
+    .info-section {
+      h4 {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+// Responsive design for mobile devices
+@media (max-width: 768px) {
+  .agency-info {
+    padding: 0.75rem;
+
+    .header-actions {
+      top: 5px;
+      right: 10px;
+      gap: 4px;
+    }
+
+    .profile-img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+    }
+
+    .agency-name {
+      font-size: 1rem;
+      margin: 0.25rem 0;
+    }
+
+    .description {
+      font-size: 0.9rem;
+      margin: 0.25rem 0;
+    }
+  }
+
+  .sidebar-content {
+    padding: 0.75rem;
+
+    .section-title {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .info-section {
+      margin-bottom: 1.5rem;
+
+      h4 {
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+
+      .info-row {
+        margin-bottom: 0.25rem;
+        padding: 0.25rem 0;
+
+        .label, .value {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+
+  .action-buttons {
+    padding-top: 0.75rem;
+  }
+
+  :host ::ng-deep {
+    .contact-btn.p-button-warning,
+    .delete-btn.p-button-danger {
+      width: 150px;
+      height: 32px;
+      font-size: 13px;
+    }
+  }
+}
+
+// Additional adjustments for very small screens
+@media (max-width: 480px) {
+  .agency-info {
+    .header-actions {
+      position: relative;
+      top: 0;
+      right: 0;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+  }
+
+  .sidebar-content {
+    .info-section {
+      .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+
+        .label {
+          margin-bottom: 0.25rem;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,140 @@
+<p-toast></p-toast>
+
+<p-dialog 
+  [(visible)]="visible" 
+  [modal]="true" 
+  [draggable]="false" 
+  [resizable]="false"
+  [style]="{width: '500px'}"
+  header="Register Travel Agency"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+  [closable]="true"
+  (onHide)="hideDialog()">
+  
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+    <div class="form-group">
+      <label for="agencyName">Agency Name *</label>
+      <input 
+        pInputText 
+        id="agencyName" 
+        formControlName="agencyName" 
+        placeholder="Travel Express"
+        [class.ng-invalid]="registerForm.get('agencyName')?.invalid && registerForm.get('agencyName')?.touched">
+      <small class="p-error" *ngIf="registerForm.get('agencyName')?.invalid && registerForm.get('agencyName')?.touched">
+        Agency name is required and must be at least 3 characters
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email *</label>
+      <input 
+        pInputText 
+        id="email" 
+        formControlName="email" 
+        placeholder="example@company.com"
+        [class.ng-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+      <small class="p-error" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+        Please enter a valid email address
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password *</label>
+      <input 
+        pInputText 
+        type="password" 
+        id="password" 
+        formControlName="password" 
+        placeholder="Abc123!@#"
+        [class.ng-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+      <small class="p-error" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+        Password must contain at least 6 characters including uppercase, lowercase, numbers and symbols
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="phoneNumber">Phone Number *</label>
+      <input 
+        pInputText 
+        id="phoneNumber" 
+        formControlName="phoneNumber" 
+        placeholder="+20 123-456-7890"
+        [class.ng-invalid]="registerForm.get('phoneNumber')?.invalid && registerForm.get('phoneNumber')?.touched">
+      <small class="p-error" *ngIf="registerForm.get('phoneNumber')?.invalid && registerForm.get('phoneNumber')?.touched">
+        Please enter a valid phone number
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location *</label>
+      <input 
+        pInputText 
+        id="location" 
+        formControlName="location" 
+        placeholder="Cairo, Egypt"
+        [class.ng-invalid]="registerForm.get('location')?.invalid && registerForm.get('location')?.touched">
+      <small class="p-error" *ngIf="registerForm.get('location')?.invalid && registerForm.get('location')?.touched">
+        Location is required
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="taxNumber">Tax Number *</label>
+      <input 
+        pInputText 
+        id="taxNumber" 
+        formControlName="taxNumber" 
+        placeholder="TAX-998877"
+        [class.ng-invalid]="registerForm.get('taxNumber')?.invalid && registerForm.get('taxNumber')?.touched">
+      <small class="p-error" *ngIf="registerForm.get('taxNumber')?.invalid && registerForm.get('taxNumber')?.touched">
+        Tax number is required
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea 
+        pInputTextarea 
+        id="description" 
+        formControlName="description" 
+        placeholder="We offer guided tours and custom travel packages"
+        [rows]="3">
+      </textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="facebookURL">Facebook URL</label>
+      <input 
+        pInputText 
+        id="facebookURL" 
+        formControlName="facebookURL" 
+        placeholder="facebook.com/your.page">
+    </div>
+
+    <div class="form-group">
+      <label for="instagramURL">Instagram URL</label>
+      <input 
+        pInputText 
+        id="instagramURL" 
+        formControlName="instagramURL" 
+        placeholder="instagram.com/your.profile">
+    </div>
+
+    <div class="form-actions">
+      <p-button 
+        type="button" 
+        label="Cancel" 
+        styleClass="p-button-text" 
+        (onClick)="hideDialog()"
+        [disabled]="loading">
+      </p-button>
+      <p-button 
+        type="submit" 
+        label="Register" 
+        [disabled]="registerForm.invalid || loading"
+        [loading]="loading">
+      </p-button>
+    </div>
+  </form>
+</p-dialog> 

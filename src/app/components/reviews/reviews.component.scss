@@ -1,0 +1,472 @@
+.reviews-container {
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  
+  h2 {
+    margin: 0;
+    color: #333;
+    font-size: 28px;
+    font-weight: 600;
+  }
+}
+
+.reviews-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  margin-top: 0.5rem;
+
+  .icon-and-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .title-and-count {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #f9b000;
+  
+    .material-icons {
+      font-size: 50px;
+      color: #232323;
+    }
+  }
+
+  h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #232323;
+    margin: 0;
+  }
+
+  .count {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: #898989;
+    margin-top: 0.25rem;
+    text-align: center;
+  }
+}
+
+.category-filter {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  
+  .category-buttons {
+    display: flex;
+    gap: 12px;
+    background-color: #f8f9fa;
+    padding: 8px;
+    border-radius: 50px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    ::ng-deep .p-selectbutton {
+      .p-button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 40px;
+        background-color: transparent;
+        color: #666;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          background-color: rgba(255, 193, 7, 0.1);
+          color: #ffc107;
+        }
+        
+        &.p-highlight {
+          background-color: #ffc107;
+          color: #fff;
+          box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+        }
+      }
+    }
+  }
+}
+
+.size-selector {
+  margin-bottom: 20px;
+
+  .size-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      background-color: #e0e0e0;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: #d0d0d0;
+      }
+
+      &.active {
+        background-color: #007bff;
+        color: white;
+      }
+    }
+  }
+}
+
+.table-container {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  ::ng-deep .p-datatable {
+    .p-datatable-header {
+      background-color: #fff;
+      border: none;
+      padding: 20px;
+    }
+    
+    .p-datatable-thead > tr > th {
+      background-color: #f8f9fa;
+      color: #333;
+      font-weight: 600;
+      padding: 16px;
+      border-bottom: 1px solid #e0e0e0;
+      
+      .p-sortable-column {
+        &:focus {
+          box-shadow: none;
+          outline: none;
+          background-color: rgba(0, 0, 0, 0.03);
+        }
+        
+        .p-sortable-column-icon {
+          color: #333 !important;
+        }
+        
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.03);
+        }
+      }
+    }
+    
+    .p-datatable-tbody > tr > td {
+      padding: 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .p-datatable-tbody > tr:hover {
+      background-color: rgba(255, 193, 7, 0.05);
+    }
+    
+    .p-datatable-tbody > tr > td .p-rating .p-rating-icon {
+      color: #ffc107;
+    }
+  }
+}
+
+// Override PrimeNG's default sort icon colors
+::ng-deep .p-datatable .p-datatable-thead > tr > th .p-sortable-column .p-sortable-column-icon,
+::ng-deep .p-datatable .p-datatable-thead > tr > th .p-sortable-column.p-highlight .p-sortable-column-icon {
+  color: #333 !important;
+}
+
+.action-icons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  
+  .action-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &.view-icon {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: #ffc107;
+      
+      &:hover {
+        background-color: #ffc107;
+        color: white;
+      }
+    }
+    
+    &.delete-icon {
+      background-color: rgba(220, 53, 69, 0.1);
+      color: #dc3545;
+      
+      &:hover {
+        background-color: #dc3545;
+        color: white;
+      }
+    }
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  color: #666;
+  
+  i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #ffc107;
+  }
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  background-color: #fff3f3;
+  border-radius: 8px;
+  color: #dc3545;
+  margin-bottom: 20px;
+  border-left: 4px solid #dc3545;
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+.no-products {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+  margin-bottom: 20px;
+  border-left: 4px solid #ffc107;
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .reviews-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .category-filter {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .category-buttons {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.review-modal-content {
+    padding: 1.5rem;
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+
+        .user-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+
+            .user-image {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .user-details {
+                h3 {
+                    margin: 0;
+                    color: #333;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                }
+
+                .review-date {
+                    margin: 0.25rem 0;
+                    color: #666;
+                    font-size: 0.9rem;
+                }
+
+                .visitor-type {
+                    margin: 0;
+                    color: #666;
+                    font-size: 0.9rem;
+                }
+            }
+        }
+
+        .review-rating {
+            padding-top: 0.5rem;
+        }
+    }
+
+    .review-body {
+        .review-title {
+            margin: 0 0 1rem;
+            color: #333;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .review-meta {
+            margin-bottom: 1rem;
+            
+            .item-name {
+                color: #FFA500;
+                font-size: 1rem;
+                font-weight: 500;
+            }
+        }
+
+        .review-comment {
+            line-height: 1.6;
+            color: #444;
+            margin: 0;
+            font-size: 1rem;
+        }
+    }
+}
+
+// Override PrimeNG dialog styles
+:host ::ng-deep {
+    .p-dialog .p-dialog-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid #eee;
+        background-color: #f8f9fa;
+    }
+
+    .p-dialog .p-dialog-content {
+        padding: 0;
+    }
+
+    .p-rating .p-rating-item.p-rating-item-active .p-rating-icon {
+        color: #ffa41c;
+    }
+    
+}
+
+// Override PrimeNG confirm dialog styles
+:host ::ng-deep {
+  .p-confirm-dialog {
+    .p-dialog-header {
+      padding: 1.5rem;
+      border-bottom: none;
+
+      .p-dialog-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+
+      .p-dialog-header-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        
+        &:hover {
+          background: rgba(0, 0, 0, 0.04);
+        }
+      }
+    }
+
+    .p-dialog-content {
+      padding: 0 1.5rem 1.5rem 1.5rem;
+      
+      .p-confirm-dialog-icon {
+        color: #6B7280;
+        font-size: 1.25rem;
+        margin-right: 0.5rem;
+      }
+
+      .p-confirm-dialog-message {
+        color: #374151;
+        font-size: 1rem;
+        margin-left: 0.5rem;
+      }
+    }
+
+    .p-dialog-footer {
+      padding: 1rem 1.5rem;
+      border-top: none;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+
+      button {
+        border-radius: 20px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        border: none;
+        transition: all 0.2s ease;
+
+        &.p-confirm-dialog-reject {
+          background: transparent;
+          color: #FFA500;
+          border: 1px solid #FFA500;
+          
+          &:hover {
+            background: rgba(255, 165, 0, 0.1);
+          }
+        }
+
+        &.p-confirm-dialog-accept {
+          background: #FFA500;
+          color: white;
+          
+          &:hover {
+            background: darken(#FFA500, 5%);
+          }
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+<div class="sidebar" 
+     [class.closed]="!isSidebarOpen"
+     (mouseenter)="isSidebarOpen = true; logoSrc = 'assets/images/logo.png'"
+     (mouseleave)="isSidebarOpen = false; logoSrc = 'assets/images/K.png'">
+  
+  <div class="logo-container">
+    <img [src]="logoSrc" alt="Logo" class="logo">
+  </div>
+
+  <nav class="menu">
+    <ul>
+      <li *ngFor="let item of menuItems"
+          [class.active]="item.isActive">
+          <a (click)="navigateTo(item)">
+            <span class="icon-wrapper">
+              <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
+            </span>
+            <span class="menu-text">{{item.title}}</span>
+          </a>
+      </li>
+    </ul>
+  </nav> 
+</div>

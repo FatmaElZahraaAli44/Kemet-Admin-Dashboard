@@ -1,0 +1,250 @@
+<!-- Toast and ConfirmDialog should be outside the sidebar to work globally -->
+<p-toast></p-toast>
+<p-confirmDialog 
+  [style]="{width: '450px'}" 
+  header="Confirm Delete" 
+  icon="pi pi-exclamation-triangle"
+  acceptLabel="Yes"
+  rejectLabel="No"
+  acceptButtonStyleClass="p-button-danger"
+  rejectButtonStyleClass="p-button-text">
+</p-confirmDialog>
+
+<!-- Sidebar -->
+<p-sidebar 
+  [(visible)]="isOpen" 
+  position="right" 
+  [style]="{width: '400px'}" 
+  [modal]="true" 
+  (onHide)="onClose()" 
+  [dismissible]="true" 
+  [showCloseIcon]="false"
+>
+
+  <!-- Header -->
+  <ng-template pTemplate="header">
+    <div class="activity-info">
+      <div class="header-actions">
+      </div>
+      <img 
+      class="activity-img"
+      [src]="(isEditing ? editedActivity?.imageURLs?.$values?.[0] : activity?.imageURLs?.$values?.[0]) || 'assets/images/defaultplace.png'"
+      [alt]="isEditing ? editedActivity?.name : activity?.name"
+      (error)="handleImageError($event)"
+    />
+      <input *ngIf="isEditing && editedActivity" [(ngModel)]="editedActivity.name" class="edit-input title" />
+      <h2 *ngIf="!isEditing">{{ activity?.name }}</h2>
+      <input *ngIf="isEditing && editedActivity" [(ngModel)]="editedActivity.categoryName" class="edit-input category" />
+      <p *ngIf="!isEditing" class="category">{{ activity?.categoryName }}</p>
+      <textarea *ngIf="isEditing && editedActivity" [(ngModel)]="editedActivity.description" class="edit-input description"></textarea>
+      <p *ngIf="!isEditing" class="description">{{ activity?.description }}</p>
+    </div>
+  </ng-template>
+
+  <!-- Sidebar Content -->
+  <div class="sidebar-content" #sidebarContent>
+    <!-- Non-Edit Mode -->
+    <div *ngIf="!isEditing">
+      <!-- Info Section -->
+      <div class="info-section">
+        <h4 class="section-title">Activity Info</h4>
+        <div class="info-row">
+          <span class="label">Duration</span>
+          <span class="value">{{ activity?.duration || 'Not specified' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Open Time</span>
+          <span class="value">{{ getTimeString(activity?.openTime) || 'Not specified' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Close Time</span>
+          <span class="value">{{ getTimeString(activity?.closeTime) || 'Not specified' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Address</span>
+          <span class="value">{{ activity?.address || 'Not specified' }}</span>
+        </div>
+        <div class="info-row" *ngIf="activity?.locationLink">
+          <span class="label">Location Link</span>
+          <a [href]="activity?.locationLink" target="_blank" class="value link">View on Map</a>
+        </div>
+        <div class="info-row">
+          <span class="label">Coordinates</span>
+          <span class="value">{{ activity?.latitude }}, {{ activity?.longitude }}</span>
+        </div>
+      </div>
+
+      <!-- Cultural Tips Section -->
+      <div class="tips" *ngIf="activity?.culturalTips?.length">
+        <h4>Cultural Tips</h4>
+        <ul class="tips-list">
+          <li *ngFor="let tip of activity?.culturalTips">{{ tip }}</li>
+        </ul>
+      </div>
+
+      <!-- Fees Section -->
+      <div class="fees-section">
+        <h4>Fees</h4>
+        <div class="info-row">
+          <span class="label">Tourist Adult</span>
+          <span class="value">{{ formatCurrency(activity?.touristAdult) }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Tourist Student</span>
+          <span class="value">{{ formatCurrency(activity?.touristStudent) }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Egyptian Adult</span>
+          <span class="value">{{ formatCurrency(activity?.egyptianAdult) }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Egyptian Student</span>
+          <span class="value">{{ formatCurrency(activity?.egyptianStudent) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isEditing && editedActivity">
+      <!-- Edit Activity Info Section -->
+      <div class="edit-activity-info">
+        <div class="section-title">Edit Activity Info</div>
+
+        <div class="time-section">
+          <div>
+            <label for="duration">Duration</label>
+            <input type="text" id="duration" class="duration-input" [(ngModel)]="editedActivity.duration" placeholder="e.g. 2-3 hours" />
+          </div>
+          <div>
+            <label for="openTime">Open Time</label>
+            <input type="time" id="openTime" [ngModel]="getTimeString(editedActivity.openTime)" (ngModelChange)="editedActivity.openTime = $event" />
+          </div>
+          <div>
+            <label for="closeTime">Close Time</label>
+            <input type="time" id="closeTime" [ngModel]="getTimeString(editedActivity.closeTime)" (ngModelChange)="editedActivity.closeTime = $event" />
+          </div>
+        </div>
+
+        <!-- Location Section -->
+        <div class="location-section">
+          <div>
+            <label for="address">Address *</label>
+            <input type="text" id="address" [(ngModel)]="editedActivity.address" placeholder="Enter physical address" required />
+          </div>
+          <div>
+            <label for="locationLink">Location Link</label>
+            <input type="text" id="locationLink" [(ngModel)]="editedActivity.locationLink" placeholder="Google Maps or similar link" />
+          </div>
+          <div class="coordinates">
+            <div>
+              <label for="latitude">Latitude *</label>
+              <input type="number" id="latitude" [(ngModel)]="editedActivity.latitude" placeholder="e.g. 25.7127" required step="any" />
+            </div>
+            <div>
+              <label for="longitude">Longitude *</label>
+              <input type="number" id="longitude" [(ngModel)]="editedActivity.longitude" placeholder="e.g. 32.6241" required step="any" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Cultural Tips -->
+        <div class="tips-list">
+          <h4>Cultural Tips</h4>
+          <div class="tip-item" *ngFor="let tip of editedActivity.culturalTips; let i = index">
+            <input type="text" class="tip-input" [(ngModel)]="editedActivity.culturalTips[i]" placeholder="Enter cultural tip">
+            <button class="remove-tip-btn" (click)="removeTip(i)">
+              <i class="pi pi-times"></i>
+            </button>
+          </div>
+          <button class="add-tip-btn" (click)="addTip()">
+            <i class="pi pi-plus"></i>
+            Add Cultural Tip
+          </button>
+        </div>
+
+        <!-- Edit Fees Section -->
+        <div class="fees-section">
+          <h4>Fees</h4>
+          <div class="info-row">
+            <span class="label">Tourist Adult</span>
+            <input type="number" class="edit-input" [(ngModel)]="editedActivity.touristAdult" min="0" />
+          </div>
+          <div class="info-row">
+            <span class="label">Tourist Student</span>
+            <input type="number" class="edit-input" [(ngModel)]="editedActivity.touristStudent" min="0" />
+          </div>
+          <div class="info-row">
+            <span class="label">Egyptian Adult</span>
+            <input type="number" class="edit-input" [(ngModel)]="editedActivity.egyptianAdult" min="0" />
+          </div>
+          <div class="info-row">
+            <span class="label">Egyptian Student</span>
+            <input type="number" class="edit-input" [(ngModel)]="editedActivity.egyptianStudent" min="0" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Media Section (Common for both views) -->
+    <div class="media">
+      <h4>Media</h4>
+      <div class="media-grid">
+        <!-- Existing images -->
+        <div class="media-item" *ngFor="let photo of (isEditing ? editedActivity?.imageURLs?.$values : activity?.imageURLs?.$values)">
+          <img [src]="photo" [alt]="'Activity image ' + photo" />
+          <button *ngIf="isEditing" class="remove-media" (click)="removeMedia(photo)">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+    
+        <!-- Preview of newly selected images (edit mode only) -->
+        <ng-container *ngIf="isEditing">
+          <div class="media-item" *ngFor="let preview of previewImages">
+            <img [src]="preview" alt="New upload preview" />
+            <button class="remove-media" (click)="removePreview(preview)">
+              <i class="pi pi-times"></i>
+            </button>
+          </div>
+        </ng-container>
+    
+        <!-- Add new images button (edit mode only) -->
+        <div *ngIf="isEditing" class="add-media">
+          <input #fileInput type="file" id="mediaUpload" multiple 
+                 (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+          <button class="add-media-btn" (click)="fileInput.click()">
+            <i class="pi pi-plus"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <ng-container *ngIf="!isEditing">
+        <button class="action-btn edit" (click)="onEdit()">
+          Edit Activity
+        </button>
+        <button 
+          pButton
+          type="button"
+          label="Delete"
+          class="p-button-danger"
+          (click)="confirmDelete($event)">
+        </button>
+      </ng-container>
+      
+      <div class="edit-actions" *ngIf="isEditing">
+        <button class="action-btn save" (click)="saveChanges()" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Save</span>
+          <span *ngIf="isLoading">
+            <span *ngIf="uploadProgress > 0">Uploading... {{uploadProgress}}%</span>
+            <span *ngIf="uploadProgress === 0">Saving...</span>
+          </span>
+        </button>
+        <button class="action-btn cancel" (click)="onClose()" [disabled]="isLoading">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</p-sidebar>
+<p-toast></p-toast>

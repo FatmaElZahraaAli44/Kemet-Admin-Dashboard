@@ -1,0 +1,405 @@
+/* SCSS to remove number input arrows */
+input[type="number"] {
+    /* For Firefox */
+    -moz-appearance: textfield;
+    
+    /* For Chrome, Safari, and Edge (Webkit browsers) */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  
+    /* Optional: Adjust appearance for better UX */
+    appearance: none;
+    padding-right: 5px; /* Adjust the padding as needed */
+}
+select
+/* Time input specific styles */
+input[type="time"] {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+  color: #232323;
+  
+  /* Remove default time picker styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* Custom styling for time input */
+  &::-webkit-datetime-edit-fields-wrapper {
+    display: flex;
+  }
+
+  &::-webkit-datetime-edit-hour-field,
+  &::-webkit-datetime-edit-minute-field {
+    padding: 0 5px;
+  }
+
+  &::-webkit-datetime-edit-ampm-field {
+    display: none; /* Hide AM/PM field */
+  }
+
+  &::-webkit-calendar-picker-indicator {
+    filter: invert(50%); /* Makes the icon grey */
+    opacity: 0.7;
+    cursor: pointer;
+    padding: 0 5px;
+  }
+}
+
+/* Time select styles */
+.time-select {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+  color: #232323;
+  background-color: #fff;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1em;
+
+  &:focus {
+    outline: none;
+    border-color: #FBBC05;
+    box-shadow: 0 0 0 2px rgba(251, 188, 5, 0.1);
+  }
+
+  &:hover {
+    border-color: #FBBC05;
+  }
+
+  option {
+    color: #232323;
+    padding: 8px;
+  }
+}
+
+.time-format {
+  color: #666;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background: #fff;
+  padding: 2rem;
+  max-width: 1100px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+h2 {
+  color: #FBBC05;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid #FBBC05;
+  width: 130px;
+  font-size: 20px;
+  font-weight: 400;
+  padding-left: 12px;
+  text-align: left;
+}
+
+/* Main layout with 3 columns */
+.form-layout {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* First column: Photo column */
+.photo-column {
+  display: flex;
+  justify-content: center;
+  width: 150px;
+  flex-shrink: 0;
+}
+
+.photo-wrapper {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img.place-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 120px;
+    object-fit: cover;
+  }
+
+  .edit-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: #FBBC05;
+    color: white;
+    border-radius: 50%;
+    padding: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s;
+    z-index: 999;
+
+    &:hover {
+      background: #e7ad3b;
+    }
+  }
+}
+
+/* Second and third columns: Main info and Time/Price */
+.column.main-info,
+.column.time-price {
+  flex: 2;
+  min-width: 300px;
+}
+
+/* Form inputs */
+.form-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-weight: 400;
+    margin-bottom: 0.3rem;
+  }
+
+  input,
+  textarea {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  /* Style for file input */
+  input[type="file"] {
+    padding: 8px;
+    border: 1px solid #FBBC05;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &::-webkit-file-upload-button {
+      background-color: #FBBC05;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      margin-right: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      
+      &:hover {
+        background-color: #e7ad3b;
+      }
+    }
+    
+    &:hover {
+      border-color: #e7ad3b;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+}
+
+/* Cultural Tips Styles */
+.tips-list {
+  margin-bottom: 1rem;
+  
+  h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .tip-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    
+    .tip-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+      
+      &:focus {
+        border-color: #FBBC05;
+        outline: none;
+      }
+    }
+    
+    .remove-tip-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #fef2f2;
+      border: none;
+      color: #ef4444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      
+      &:hover {
+        background-color: #fee2e2;
+      }
+      
+      i {
+        font-size: 12px;
+      }
+    }
+  }
+  
+  .add-tip-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border: 1px dashed #e5e7eb;
+    border-radius: 4px;
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    
+    &:hover {
+      background-color: #f1f5f9;
+      border-color: #FBBC05;
+      color: #FBBC05;
+    }
+    
+    i {
+      margin-right: 8px;
+      font-size: 12px;
+    }
+  }
+}
+
+.btn-save {
+  margin-top: 2rem;
+  background-color: #FBBC05;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-weight: 200;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  height: 35px;
+  width: 120px;
+  margin-left: auto;
+  display: block;
+
+  &:hover {
+    color: #000;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-layout {
+    flex-direction: column;
+  }
+
+  .column {
+    width: 100%;
+  }
+}
+
+.photos-preview {
+  margin-top: 15px;
+
+  .photos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    
+    .photo-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}
+
+.upload-hint {
+  color: #666;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.form-select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #232323;
+  background-color: #fff;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1em;
+
+  &:focus {
+    outline: none;
+    border-color: #FBBC05;
+    box-shadow: 0 0 0 2px rgba(251, 188, 5, 0.1);
+  }
+
+  &:hover {
+    border-color: #FBBC05;
+  }
+}
+  
