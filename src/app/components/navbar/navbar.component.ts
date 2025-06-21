@@ -24,34 +24,68 @@ export class NavbarComponent implements OnInit {
   }
 
   private setComponentName(): void {
-    // Get the current route snapshot
-    const currentRoute = this.router.routerState.snapshot.root;
+    // Get the current URL path
+    const url = this.router.url;
     
-    // Find the activated component
-    let component: any = currentRoute.component;
-    let child = currentRoute.firstChild;
+    // Map routes to proper titles
+    const routeTitleMap: { [key: string]: string } = {
+      '/activities': 'Activities',
+      '/activity-details': 'Activity Details',
+      '/add-activity': 'Add Activity',
+      '/places': 'Places',
+      '/place-details': 'Place Details',
+      '/add-place': 'Add Place',
+      '/customers': 'Customers',
+      '/customer-details': 'Customer Details',
+      '/travel-agencies': 'Travel Agencies',
+      '/agency-details': 'Agency Details',
+      '/agency-register': 'Agency Register',
+      '/reviews': 'Reviews',
+      '/dashboard': 'Dashboard',
+      '/': 'Dashboard'
+    };
     
-    while (child) {
-      if (child.component) {
-        component = child.component;
+    // Check for exact match or partial match
+    let title = routeTitleMap[url];
+    
+    if (!title) {
+      // Try to find a partial match
+      for (const route in routeTitleMap) {
+        if (url.startsWith(route) && route !== '/') {
+          title = routeTitleMap[route];
+          break;
+        }
       }
-      child = child.firstChild;
     }
     
-    if (component) {
-      // Extract the component name
-      const componentName = component.name.replace('Component', '');
-      this.pageTitle = this.formatTitle(componentName);
-    } else {
-      this.pageTitle = 'Dashboard'; // Default fallback
+    // Fallback to extracting from URL
+    if (!title) {
+      const pathSegments = url.split('/').filter(segment => segment);
+      if (pathSegments.length > 0) {
+        const lastSegment = pathSegments[pathSegments.length - 1];
+        title = this.formatTitle(lastSegment);
+      } else {
+        title = 'Dashboard';
+      }
     }
+    
+    this.pageTitle = title;
   }
 
   private formatTitle(name: string): string {
-    // Convert PascalCase to Space Separated
+    // Convert PascalCase to Space Separated with proper handling
+    if (!name) return 'Dashboard';
+    
     return name
-      .replace(/([A-Z])/g, ' $1')
+      // Insert space before capital letters (but not at the beginning)
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      // Handle consecutive capital letters
+      .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
+      // Trim any extra whitespace
       .trim()
-      .replace(/^./, str => str.toUpperCase());
+      // Capitalize first letter and ensure proper case
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
   }
 }
